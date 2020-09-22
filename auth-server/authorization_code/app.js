@@ -9,17 +9,18 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
 
 /*---------------------------API Credentials to be later saved as .ENV ----------------*/
-var client_id; // Your client id
-var client_secret; // Your secret
-var redirect_uri; // Or Your redirect uri
+var client_id = '51ba49426fbd4113a06188a78f960c17'
+var client_secret = '98ffa87064d04951ae4081bd7181993b'
+var redirect_uri = 'http://localhost:8888/callback'
 
 
 
-/*--------------------------Setup parsers------------------------------------------------*/
+/*--------------------------Setup parsers and other middleware------------------------------------------------*/
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'))
     .use(cookieParser());
 
+app.use(cors());
 /*-----------------------------------Setting up the Session------------------------------- */
 
 app.use(session({
@@ -40,16 +42,14 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { secure: false },
+    name: 'server_sid'
 }))
 
 
+/*-------------------------------Hashing---------------------------------*/
 
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
+
 var generateRandomString = function(length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -62,6 +62,8 @@ var generateRandomString = function(length) {
 
 var stateKey = 'spotify_auth_state';
 
+
+/*--------------------------------Routes--------------------------------*/
 
 app.get('/login', function(req, res) {
 
@@ -126,9 +128,10 @@ app.get('/callback', function(req, res) {
 
 
         // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-            console.log(body);
-        });
+        //request.get(options, function(error, response, body) {
+        //    console.log(body);
+        //    res.send(body.id)
+        //});
 
         // we can also pass the token to the browser to make requests from there
         res.redirect('http://localhost:3000/#' +
@@ -171,7 +174,7 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.get("/getCredentials", (req, res, next) => {
+app.get("/getCredentials", cors(), (req, res, next) => {
     if (req.session.access_token) {
         async function getCred() {
             await axios({
@@ -179,7 +182,8 @@ app.get("/getCredentials", (req, res, next) => {
                 url: 'https://api.spotify.com/v1/me',
                 responseType: 'json',
                 headers: {
-                    'Authorization': 'Bearer ' + req.session.access_token
+                    'Authorization': 'Bearer ' + req.session.access_token,
+                    'Access-Control-Allow-Origin' : '*'
                 }
             })
                 .then(response => {
@@ -192,21 +196,13 @@ app.get("/getCredentials", (req, res, next) => {
                     console.log(err)
                 })
         } getCred();
-    } else console.log("Need an access token")
-
-    //async function getCred() {
-    //    await fetch("https://api.spotify.com/v1/me", {
-    //        'Content-Type': 'application/json',
-    //        method: "GET",
-    //        headers: {
-    //            'Authorization': 'Bearer ' + req.session.access_token
-    //        }
-    //    }).then(data => {
-    //        console.log(data)
-    //    })
-    //} getCred();    
+    } else {
+        res.redirect('/#' +
+            querystring.stringify({
+                error: 'token_undefined'
+            }));
+    }
 })
-
 
 
 console.log('Listening on 8888');

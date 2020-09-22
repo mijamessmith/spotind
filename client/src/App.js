@@ -25,6 +25,7 @@ class App extends Component {
         locationParams: {}
       }
       this.handleCreateAPlaylist = this.handleCreateAPlaylist.bind(this)
+      this.getUserId = this.getUserId.bind(this)
     }
   getHashParams() {
     var hashParams = {};
@@ -54,7 +55,7 @@ class App extends Component {
         spotifyApi.searchTracks('Desert Rose')
             .then( data => {
                 console.log('Search by "Desert Rose"', data/*.tracks.items[0].id*/);
-               this.createATestPlaylist()
+               //this.createATestPlaylist()
             },
             function (err) {
                 console.error(err);
@@ -70,8 +71,11 @@ class App extends Component {
 
     getUserId() {
         async function getU() {
-            let response = await axios('http://localhost:8888/getcredentials', {
-                withCredentials: true
+            let response = await axios('http://localhost:8888/getcredentials', {         
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    withCredentials: true
+                }
             })
             return response
         } let result = getU()
@@ -80,16 +84,16 @@ class App extends Component {
 
 
     createATestPlaylist() {
-        let id = this.getUserId()
-    
-        spotifyApi.createPlaylist(id, "Playlist_Test1")
-            .then(data => {
-                console.log('Created a new playlist', data);
-            },
-                function (err) {
-                    console.error(err);
-                }
-            )
+        async function PlaylistSubFunction() {
+            let id = await this.getUserId()
+            console.log('inside createATestPlaylist with id ' + id);
+            spotifyApi.createPlaylist(id, "Playlist_Test1")
+                .then(data => {
+                    console.log('Created a new playlist', data);
+                }).catch((err) => {
+                    console.log(err)
+                })
+        } PlaylistSubFunction()
     }
     
 
