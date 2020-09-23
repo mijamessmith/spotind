@@ -1,11 +1,11 @@
-import react, { useContext } from 'react';
-import * as utils from './helperFunctions'
+import React, { useContext } from 'react';
+
 
 
 export default async function TrackSearch() {
     const [track, setNewTrack] = useContext("4WhyHQ2BXi2VU1iaFbF6jv")
-        
-        getNewTrack
+
+    getNewTrack()
 
     return (
         <div>

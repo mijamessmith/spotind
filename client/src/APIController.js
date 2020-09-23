@@ -1,9 +1,17 @@
-export default async function getASpotifyTrackFromRandomStr(searchStr) {
-        spotifyApi.searchTracks('Desert Rose')
+import SpotifyWebApi from 'spotify-web-api-js';
+const spotifyApi = new SpotifyWebApi();
+
+function getASpotifyTrackFromRandomStr(searchStr) {
+            let track = ''
+
+            spotifyApi.searchTracks(searchStr)
             .then(data => {
-                console.log('Search by "Desert Rose"', data);
-                return data.tracks.items[Math.floor(Math.random() * 20)]
+                console.log('Searched:' + searchStr, data);
+                track = data.tracks.items[Math.floor(Math.random() * 20)]
             }).catch((err) => {
                 console.log(err)
             })
+    return track;
 }
+
+export { getASpotifyTrackFromRandomStr}

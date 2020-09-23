@@ -1,10 +1,17 @@
 import React, { Component, useLocation } from 'react';
 import axios from "axios";
 import { parse } from "query-string";
-import './App.css';
+import { getRandomStrForTrackSearch, getHashParams } from "./utils";
+import { getASpotifyTrackFromRandomStr } from "./APIController"
+import LogOut from './LogOut';
+
+import './assets/css/App.css';
+import './assets/css/EmbeddedPlayer.css';
 import EmbeddedPlayer from "./EmbeddedPlayer"
+import Dislike from './Dislike'
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
+
 
 class App extends Component {
   constructor(props){
@@ -26,6 +33,8 @@ class App extends Component {
       }
       this.handleCreateAPlaylist = this.handleCreateAPlaylist.bind(this)
       this.getUserId = this.getUserId.bind(this)
+      this.getHashParams = this.getHashParams.bind(this)
+      this.createATestPlaylist = this.createATestPlaylist.bind(this)
     }
   getHashParams() {
     var hashParams = {};
@@ -70,18 +79,18 @@ class App extends Component {
 
 
     getUserId() {
-        async function getU() {
-            let response = await axios('http://localhost:8888/getcredentials', {         
+        let result =  (async () => {
+            let response = await axios('http://localhost:8888/getcredentials', {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     withCredentials: true
                 }
             })
             return response
-        } let result = getU()
+        })();
+        this.setState({userId : result})
         return result
     }
-
 
     createATestPlaylist() {
         async function PlaylistSubFunction() {
@@ -100,29 +109,28 @@ class App extends Component {
 
 
     render() {
-        //var par1 = Object.keys(this.state.locationParams).map((key, i) => {
-        //    return <h4>{i}</h4>
-        //    console.log(par1)
-        //})
+     
     return (
       <div className="App">
-        <a href='http://localhost:8888' > Login to Spotify </a>
+        <a href='http://localhost:8888/' > Login to Spotify </a>
         <div>
           Now Playing: { this.state.nowPlaying.name }
-            </div>
+        </div>
         <div>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
-         </div>
-       { this.state.loggedIn &&
+          <img src={this.state.nowPlaying.albumArt} style={{ height: 150, marginBottom: 50 }}/>
+        </div>
+        { this.state.loggedIn &&
           <button onClick={() => this.searchForTrack()}>
             Search for a track
           </button>
-            }
+        }
             <EmbeddedPlayer />
-            <div>
-                <button onClick={this.handleCreateAPlaylist}>Click to create a playlist</button>
-            </div>
+            <Dislike />
+            <LogOut/>
+        <div>
+           <button onClick={() => this.handleCreateAPlaylist}>Click to create a playlist</button>
         </div>
+      </div>
     );
   }
 }

@@ -1,5 +1,4 @@
-
-export function getRandomStrForTrackSearch() {
+function getRandomStrForTrackSearch() {
     const chars = '1234567890abcdefghijklmnopqrstuvwxyz'
 
     var charPosition = () => Math.floor(Math.random() * chars.length + 1)
@@ -15,3 +14,17 @@ export function getRandomStrForTrackSearch() {
     } else outputStr = '%' + outputStr + '%'   
     return outputStr;
 }
+
+function getHashParams() {
+    var hashParams = {};
+    var e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.hash.substring(1);
+    e = r.exec(q)
+    while (e) {
+        hashParams[e[1]] = decodeURIComponent(e[2]);
+        e = r.exec(q);
+    }
+    return hashParams;
+}
+
+export { getHashParams, getRandomStrForTrackSearch }

@@ -16,7 +16,9 @@ class EmbeddedPlayer extends Component {
     render() {
         const iframeSRC = "https://open.spotify.com/embed/track/" + `${this.state.trackId}`
         return (
-            <iframe src={iframeSRC} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            <div className="EmbeddedPlayer">
+                <iframe src={iframeSRC} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
             )
     }
 }
