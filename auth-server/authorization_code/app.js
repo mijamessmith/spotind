@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const handlebars = require('handlebars')
 const cors = require('cors');
 
 const app = express();
@@ -65,7 +66,7 @@ var stateKey = 'spotify_auth_state';
 
 /*--------------------------------Routes--------------------------------*/
 
-app.get('/login', function(req, res) {
+app.get('/API/login', function(req, res) {
 
   var state = generateRandomString(16);
     res.cookie(stateKey, state);
@@ -80,6 +81,20 @@ app.get('/login', function(req, res) {
       state: state
     }));
 });
+
+
+app.get('/API/logout', (req, res, next) => {
+    req.session.destroy(); //Kill Session
+    console.log('killed:' + req.session)
+    res.end();
+    res.redirect("http://localhost:3000?logout=true");
+})
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'))
+})
+
 
 app.get('/callback', function(req, res) {
 
@@ -150,6 +165,8 @@ app.get('/callback', function(req, res) {
   }
 });
 
+
+
 app.get('/refresh_token', function(req, res) {
 
   // requesting access token from refresh token
@@ -206,4 +223,4 @@ app.get("/getCredentials", cors(), (req, res, next) => {
 
 
 console.log('Listening on 8888');
-app.listen(8888);
+app.listen(8888, () => console.log('listening on 8888'));

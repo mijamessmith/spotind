@@ -11,6 +11,7 @@
     "dotenv": "^8.2.0",
     "express": "~4.0.0",
     "express-session": "^1.17.1",
+    "handlebars": "^4.7.6",
     "querystring": "~0.2.0",
     "request": "~2.34.0",
     "uuid": "^8.3.0"
