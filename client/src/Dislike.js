@@ -1,28 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { getRandomStrForTrackSearch, getHashParams } from "./utils";
+import { getRandomStrForTrackSearch} from "./utils";
 import { getASpotifyTrackFromRandomStr } from "./APIController"
 import dislike from './assets/images/dislike.svg'
 
 
 
 export default function Dislike() {
-    const [searchStr, getSearchStr] = useState('');
+    const [searchStr, getSearchStr] = useState('brandnewday');
     const [track, getTrack] = useState("4WhyHQ2BXi2VU1iaFbF6jv");
 
 
-    function handleClick() {
-        let newTrack = getASpotifyTrackFromRandomStr(getRandomStrForTrackSearch());  
-        return newTrack
-    }
+    useEffect(() => {
+             async function getData() {
+                 let newTrackId = await getASpotifyTrackFromRandomStr(searchStr)
+                 debugger;
 
-    function setTrack(tr) {
-        getTrack(tr)
-    }
+                 if (newTrackId) {
+                     console.log("inside the dislike useEffect function with: " + newTrackId)
+                     getTrack(newTrackId)
+                 } else console.log("did not receive newTrack in Dislike.js")
+        } getData()
+    }, [searchStr]);
+
+
+
+
+
+    //function handleClick() {
+    //    let newTrack = getASpotifyTrackFromRandomStr(getRandomStrForTrackSearch());  
+    //    return newTrack
+    //}
+
+    //function setTrack(tr) {
+    //    getTrack(tr)
+    //}
 
     return (
         <div className='Dislike'>
             <p>The current track is {track}</p>
-            <a onClick={() => handleClick()}>
+            <a onClick={() => getSearchStr(getRandomStrForTrackSearch())}>
                 <img src={dislike} alt='Frowny-Face' style={{ height: 50, width: 50 }} />
             </a>
         </div>
