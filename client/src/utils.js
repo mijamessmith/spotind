@@ -1,3 +1,6 @@
+import queryString from 'query-string'
+
+
 function getRandomStrForTrackSearch() {
     const chars = '1234567890abcdefghijklmnopqrstuvwxyz'
 
@@ -27,4 +30,19 @@ function getHashParams() {
     return hashParams;
 }
 
-export { getHashParams, getRandomStrForTrackSearch }
+function getQueryParams() {
+    let result = ''
+    let hashed = queryString.parse(window.location.hash)
+    debugger
+    if (hashed) {
+        debugger;
+        result = hashed.userId;
+        debugger;
+        return result
+    } else return result;
+}
+
+
+
+export { getHashParams, getRandomStrForTrackSearch, getQueryParams } 
+

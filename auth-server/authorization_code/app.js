@@ -9,8 +9,9 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-const handlebars = require('handlebars')
 const cors = require('cors');
+const Promise = require('bluebird');
+
 
 const app = express();
 
@@ -141,18 +142,31 @@ app.get('/callback', function(req, res) {
           json: true
         };
 
+            function getSpotifyUserId (){
+              return Promise.try(() => {
+                     request.get(options, function (error, response, body) {
+                          console.log(body);
+                          req.session.spotifyUserId = body.id
+                         res.redirect('http://localhost:3000/#' +
+                             querystring.stringify({
+                                 access_token: access_token,
+                                 refresh_token: refresh_token,
+                                 userId: req.session.spotifyUserId
+                             }));
+                      })
+                  }
+              )
+          }
 
-        request.get(options, function(error, response, body) {
-            console.log(body);
-            res.send(body.id)
-        });
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('http://localhost:3000/#' +
-          querystring.stringify({
-            access_token: access_token,
-              refresh_token: refresh_token,
-          }));
+          getSpotifyUserId().then(() => {
+              // we can also pass the token to the browser to make requests from there
+              //res.redirect('http://localhost:3000/#' +
+              //    querystring.stringify({
+              //        access_token: access_token,
+              //        refresh_token: refresh_token,
+              //        userId: req.session.spotifyUserId
+              //    }));
+          }).catch(er => console.log(er))
 
       } else {
         res.redirect('/#' +

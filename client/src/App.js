@@ -1,7 +1,7 @@
 import React, { Component, useLocation } from 'react';
 import axios from "axios";
 import { parse } from "query-string";
-import { getRandomStrForTrackSearch, getHashParams } from "./utils";
+import { getRandomStrForTrackSearch, getHashParams, getQueryParams } from "./utils";
 import { getASpotifyTrackFromRandomStr } from "./APIController"
 import LogOut from './LogOut';
 
@@ -26,7 +26,7 @@ class App extends Component {
 
     this.state = {
         loggedIn: token ? true : false,
-        userId : "",
+        userId : '',
         nowPlaying: { name: 'Not Checked', albumArt: '' },
         recentlyPlayed: null,
         accessToken: token,
@@ -36,7 +36,14 @@ class App extends Component {
       this.getUserId = this.getUserId.bind(this)
       this.getHashParams = this.getHashParams.bind(this)
       this.createATestPlaylist = this.createATestPlaylist.bind(this)
+      this.getUser = this.getUser.bind(this);
     }
+
+    getUser() {
+        let user = getQueryParams();
+        this.setState = {userId : user}
+    }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -60,6 +67,9 @@ class App extends Component {
         });
       })
     };
+
+  //  setState({ userId: this.getUser() })
+
 
     searchForTrack() {
         spotifyApi.searchTracks('Desert Rose')
