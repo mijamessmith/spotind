@@ -9,6 +9,7 @@ import './assets/css/App.css';
 import './assets/css/EmbeddedPlayer.css';
 import EmbeddedPlayer from "./EmbeddedPlayer"
 import Dislike from './Dislike'
+import Player from './Player'
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -124,8 +125,7 @@ class App extends Component {
             Search for a track
           </button>
         }
-            <EmbeddedPlayer />
-            <Dislike />
+            <Player />
             <LogOut/>
         <div>
            <button onClick={() => this.handleCreateAPlaylist}>Click to create a playlist</button>

@@ -1,8 +1,14 @@
 import React, { Component, useState, useEffect } from 'react';
 
-function EmbeddedPlayer() {
+function EmbeddedPlayer({ trackIdFromDislike }) {
     const [iframeSongId, getiframeSongId] = useState("4WhyHQ2BXi2VU1iaFbF6jv")
-    const iframeSRC = "https://open.spotify.com/embed/track/" + iframeSongId
+
+    useEffect(() => {
+        getiframeSongId(trackIdFromDislike);
+    }, [trackIdFromDislike]);
+
+
+    var iframeSRC = "https://open.spotify.com/embed/track/" + iframeSongId
     return (
         <div className="EmbeddedPlayer">
             <iframe title="spotifyPlayer" src={iframeSRC} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
