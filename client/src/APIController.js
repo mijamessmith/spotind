@@ -19,10 +19,10 @@ async function handleLikedTrack(id, track) {
 
     async function checkIfUserHasPlaylist(uid) {
         //call api based on user to see playlists
-        let playLists = await Spotify.getUserPlaylists(uid)
+        let playLists = await spotifyApi.getUserPlaylists(uid)
         //if user has a playlist with correct name, call add to playlist
         if (playLists.something === "blah") {
-            PlaylistId === "another bleh"
+            PlaylistId = "another bleh"
             return true
         } else return false;
     }
@@ -30,14 +30,14 @@ async function handleLikedTrack(id, track) {
 
     async function createNewPlaylist(uid) {
         //create a new spotify playlist with credentials
-        await Spotify.createNewPlaylist(uid, { name: "Tinspot mixtape" })
+        await spotifyApi.createNewPlaylist(uid, { name: "Tinspot mixtape" })
 
     }
 
 
     async function addTrackToPlaylist(userId, playlistId, trackId) {
         //add track to playlist
-        await Spotify.addTrackToPlaylist(userId, playlistId, [trackId])
+        await spotifyApi.addTrackToPlaylist(userId, playlistId, [trackId])
     }
 
 
@@ -53,4 +53,4 @@ async function handleLikedTrack(id, track) {
 }
 
 
-export { getASpotifyTrackFromRandomStr, handleLikedTrack}
+export { getASpotifyTrackFromRandomStr}

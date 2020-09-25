@@ -17,12 +17,12 @@ function Player() {
     const getCurrentTrack = () => {
         return trackId
     }
-   
+    //<Like updateParent={updateTrack} currentTrack={getCurrentTrack} />
     return (
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
-            <Like updateParent={updateTrack} currentTrack={getCurrentTrack} />
+            
         </div>
         
         )

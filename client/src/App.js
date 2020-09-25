@@ -37,13 +37,16 @@ class App extends Component {
         recentlyPlayed: null,
         accessToken: token,
         params: params,
-        playlist: {}
+        playlist: {},
+        playlistId: null
       }
+
       this.handleCreateAPlaylist = this.handleCreateAPlaylist.bind(this)
       //this.getUserId = this.getUserId.bind(this)
       //this.getHashParams = this.getHashParams.bind(this)
       this.createATestPlaylist = this.createATestPlaylist.bind(this)
       //this.getUser = this.getUser.bind(this);
+      this.checkPlaylist = this.checkPlaylist.bind(this);
     }
 
     //getUser() {
@@ -64,15 +67,15 @@ class App extends Component {
   //}
 
   getNowPlaying(){
-    spotifyApi.getMyCurrentPlaybackState()
-        .then((response) => {
-        this.setState({
-          nowPlaying: { 
-              name: response.item.name, 
-              albumArt: response.item.album.images[0].url
-            }
-        });
-      })
+      spotifyApi.getMyCurrentPlaybackState()
+          .then((response) => {
+              this.setState({
+                  nowPlaying: {
+                      name: response.item.name,
+                      albumArt: response.item.album.images[0].url
+                  }
+              });
+          }).catch((err) => console.log(err));
     };
 
   //  setState({ userId: this.getUser() })
@@ -87,12 +90,12 @@ class App extends Component {
             function (err) {
                 console.error(err);
             }
-        )
+        ).catch((err) => console.log(err));
     }
 
 
     handleCreateAPlaylist() {
-        return this.createATestPlaylist()
+        return this.createATestPlaylist(this.state.userId);
     }
 
 
@@ -127,8 +130,22 @@ class App extends Component {
     
 
     checkPlaylist() {
-        let userplayLists = await Spotify.getUserPlaylists(uid);
-        this.setState = {playlist: userplayLists}
+        spotifyApi.getUserPlaylists(this.state.userId)
+            .then( data => {
+                console.log('got the playlists:' + data);
+                let items = data.items
+                debugger;
+                let play = items.filter((ps) => ps.name === 'Testing Playlist1')
+                debugger;
+                this.setState({
+                    playlist: play[0].name,
+                    playlistId: play[0].id
+                })
+            },
+            function (err) {
+                console.error(err);
+            }
+        ).catch((err) => console.log(err));
     }
 
     render() {
@@ -149,7 +166,7 @@ class App extends Component {
                 <Player userId={this.state.userId}/>
                 <LogOut />
 
-                <button onClick={() => this.checkPlaylist}>Playlist?</button>
+                <button onClick={this.checkPlaylist}>Playlist?</button>
 
                 <div>
                     <button onClick={() => this.handleCreateAPlaylist}>Click to create a playlist</button>
