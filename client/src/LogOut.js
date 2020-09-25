@@ -6,7 +6,7 @@ function Logout() {
     const [logout, logoutuser] = useState(false);
 
     async function logUserOut() {
-        if (logout === false); {
+        if (logout === false) {
             await axios('http://localhost:8888/API/logout');
             logoutuser(true);
         }

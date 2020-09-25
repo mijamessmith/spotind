@@ -4,9 +4,7 @@ import { getASpotifyTrackFromRandomStr } from "./APIController"
 import dislike from './assets/images/dislike.svg'
 
 export default function Dislike(props) {
-    debugger;
     var { updateParent } = props;
-    console.log(updateParent)
     const [searchStr, getSearchStr] = useState('brandnewday');
     const [track, getTrack] = useState("4WhyHQ2BXi2VU1iaFbF6jv");
 
@@ -14,8 +12,6 @@ export default function Dislike(props) {
     useEffect(() => {
              async function getData() {
                  let newTrackId = await getASpotifyTrackFromRandomStr(searchStr)
-                 debugger;
-
                  if (newTrackId) {
                      console.log("inside the dislike useEffect function with: " + newTrackId)
                      getTrack(newTrackId);

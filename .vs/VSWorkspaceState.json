@@ -1,10 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\auth-server",
     "\\auth-server\\authorization_code",
+    "\\auth-server\\authorization_code\\public",
     "\\client",
-    "\\client\\src"
+    "\\client\\public",
+    "\\client\\src",
+    "\\client\\src\\assets\\css",
+    "\\client\\src\\assets\\images"
   ],
-  "SelectedNode": "\\client\\src\\App.js",
+  "SelectedNode": "\\auth-server\\authorization_code",
   "PreviewInSolutionExplorer": false
 }
