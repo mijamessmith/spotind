@@ -6,6 +6,8 @@ import Dislike from './Dislike';
 
 function Player() {
     const [trackId, changeTrackId] = useState('');
+    const [playListId, getplayListId] = useState(null);
+
     //const [artist, updateArtist] = useState('');
     //const [trackName, updateTrackName] = useState('');
 
@@ -14,15 +16,16 @@ function Player() {
         changeTrackId(tID)
     }
 
-    const getCurrentTrack = () => {
-        return trackId
+    const updatePlaylistId = (pID) => {
+        getplayListId(pID);
     }
+
     //<Like updateParent={updateTrack} currentTrack={getCurrentTrack} />
     return (
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
-            
+            <Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
         </div>
         
         )

@@ -16,28 +16,54 @@ function getASpotifyTrackFromRandomStr(searchStr) {
 async function handleLikedTrack(id, track) {
 
     let PlaylistId;
+    let hasPlaylist = false;
 
     async function checkIfUserHasPlaylist(uid) {
-        //call api based on user to see playlists
-        let playLists = await spotifyApi.getUserPlaylists(uid)
-        //if user has a playlist with correct name, call add to playlist
-        if (playLists.something === "blah") {
-            PlaylistId = "another bleh"
-            return true
-        } else return false;
-    }
 
+        spotifyApi.getUserPlaylists(uid)
+            .then(data => {
+                console.log('got the playlists:' + data);
+                let items = data.items
+                debugger;
+                let play = items.filter((ps) => ps.name === 'Testing Playlist1')
+                debugger;
+                if (play.length !== 0) {
+                    hasPlaylist = true
+                    PlaylistId = play[0].id
+                    return true
+                } else return false
+            },
+                function (err) {
+                    console.error(err);
+                }
+        ).catch((err) => console.log(err));
+       
+    }
 
     async function createNewPlaylist(uid) {
         //create a new spotify playlist with credentials
-        await spotifyApi.createNewPlaylist(uid, { name: "Tinspot mixtape" })
+        spotifyApi.createNewPlaylist(uid, { name: "Testing Playlist1" })
+            .then(data => {
+                debugger;
+                addTrackToPlaylist(uid, playlistId, track)
+            }, function (err) {
+                console.error(err);
+            }
+            ).catch((err) => console.log(err));
 
     }
 
 
     async function addTrackToPlaylist(userId, playlistId, trackId) {
         //add track to playlist
-        await spotifyApi.addTrackToPlaylist(userId, playlistId, [trackId])
+        spotifyApi.addTrackToPlaylist(userId, playlistId, [trackId])
+            .then(data => {
+                debugger;
+                console.log(data);
+            }, function (err) {
+                console.error(err);
+            }
+            ).catch((err) => console.log(err));
     }
 
 
@@ -46,11 +72,12 @@ async function handleLikedTrack(id, track) {
         //call add to playlist
         await addTrackToPlaylist(id, PlaylistId, track)
     } else {
-        await createNewPlaylist(id)
+        await createNewPlaylist(id);
+        hasPlaylist = true
     }
 
-
+    return PlaylistId
 }
+    
 
-
-export { getASpotifyTrackFromRandomStr}
+export { getASpotifyTrackFromRandomStr, handleLikedTrack}
