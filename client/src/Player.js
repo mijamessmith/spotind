@@ -20,12 +20,11 @@ function Player() {
         getplayListId(pID);
     }
 
-    //<Like updateParent={updateTrack} currentTrack={getCurrentTrack} />
+    //<Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
     return (
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
-            <Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
         </div>
         
         )

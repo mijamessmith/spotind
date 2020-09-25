@@ -13,85 +13,55 @@ const spotifyApi = new SpotifyWebApi();
 
 
 class App extends Component {
-  constructor(props){
-    super();
-     const params = getHashParams();
-     const token = params.access_token;
-      var userId;
+    constructor(props) {
+        super();
+        const params = getHashParams();
+        const token = params.access_token;
+        var userId;
 
-      if (params) {
-          userId = params.userId
-      } else {
-          userId = null;
-      }
+        if (params) {
+            userId = params.userId
+        } else {
+            userId = null;
+        }
 
 
-      if (token) {
-      spotifyApi.setAccessToken(token);
-      }
+        if (token) {
+            spotifyApi.setAccessToken(token);
+        }
 
-    this.state = {
-        loggedIn: token ? true : false,
-        userId : userId,
-        nowPlaying: { name: 'Not Checked', albumArt: '' },
-        recentlyPlayed: null,
-        accessToken: token,
-        params: params,
-        playlist: {},
-        playlistId: null
-      }
+        this.state = {
+            loggedIn: token ? true : false,
+            userId: userId,
+            nowPlaying: { name: '4WhyHQ2BXi2VU1iaFbF6jv', albumArt: '' },
+            recentlyPlayed: null,
+            accessToken: token,
+            params: params,
+            playlist: {},
+            playlistId: null
+        }
 
-      this.handleCreateAPlaylist = this.handleCreateAPlaylist.bind(this)
-      //this.getUserId = this.getUserId.bind(this)
-      //this.getHashParams = this.getHashParams.bind(this)
-      this.createATestPlaylist = this.createATestPlaylist.bind(this)
-      //this.getUser = this.getUser.bind(this);
-      this.checkPlaylist = this.checkPlaylist.bind(this);
+        this.handleCreateAPlaylist = this.handleCreateAPlaylist.bind(this)
+        //this.getUserId = this.getUserId.bind(this)
+        //this.getHashParams = this.getHashParams.bind(this)
+        this.createATestPlaylist = this.createATestPlaylist.bind(this)
+        //this.getUser = this.getUser.bind(this);
+        this.checkPlaylist = this.checkPlaylist.bind(this);
+        this.updatePlaylistId = this.updatePlaylistId.bind(this);
+        this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
     }
 
-    //getUser() {
-    //    let user = getQueryParams();
-    //    this.setState = {userId : user}
-    //}
-
-  //getHashParams() {
-  //  var hashParams = {};
-  //  var e, r = /([^&;=]+)=?([^&;]*)/g,
-  //      q = window.location.hash.substring(1);
-  //  e = r.exec(q)
-  //  while (e) {
-  //     hashParams[e[1]] = decodeURIComponent(e[2]);
-  //     e = r.exec(q);
-  //  }
-  //  return hashParams;
-  //}
-
-  getNowPlaying(){
-      spotifyApi.getMyCurrentPlaybackState()
-          .then((response) => {
-              this.setState({
-                  nowPlaying: {
-                      name: response.item.name,
-                      albumArt: response.item.album.images[0].url
-                  }
-              });
-          }).catch((err) => console.log(err));
+    getNowPlaying() {
+        spotifyApi.getMyCurrentPlaybackState()
+            .then((response) => {
+                this.setState({
+                    nowPlaying: {
+                        name: response.item.name,
+                        albumArt: response.item.album.images[0].url
+                    }
+                });
+            }).catch((err) => console.log(err));
     };
-
-  //  setState({ userId: this.getUser() })
-
-
-    searchForTrack() {
-        spotifyApi.searchTracks('Desert Rose')
-            .then( data => {
-                console.log('Search by "Desert Rose"', data/*.tracks.items[0].id*/);
-               //this.createATestPlaylist()
-            },
-            function (err) {
-                console.error(err);
-            }
-        ).catch((err) => console.log(err));
-    }
 
 
     handleCreateAPlaylist() {
@@ -99,35 +69,80 @@ class App extends Component {
     }
 
 
-    //getUserId() {
-    //    let result =  (async () => {
-    //        let response = await axios('http://localhost:8888/getcredentials', {
-    //            headers: {
-    //                'Access-Control-Allow-Origin': '*',
-    //                withCredentials: true
-    //            }
-    //        })
-    //        return response
-    //    })();
-    //    this.setState({userId : result})
-    //    return result
-    //}
-
-    createATestPlaylist() {
-        async function PlaylistSubFunction() {
-            if (this.state.userId) {
-                let id = this.state.userId;
-                console.log('inside createATestPlaylist with id ' + id);
-                spotifyApi.createPlaylist(id, "Playlist_Test1")
-                    .then(data => {
-                        console.log('Created a new playlist', data);
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-            } else console.log('lacking a userId');
-        } PlaylistSubFunction()
+    updatePlaylistId(id) {
+        debugger;
+        this.setState({ playlistId: id })
     }
+
+    async createATestPlaylist() {
+        var id = this.state.userId
+        var authToken = this.state.accessToken
+        var newPlaylistId = null;
+        debugger;
+        let address = "https://api.spotify.com/v1/users/" + id + "/playlists"
+        async function subp() {
+            await axios({
+                method: 'POST',
+                url: address,
+                responseType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    name: "Testing Axios Playlist"
+                }
+            }).then(response => {
+                if (response) {
+                    debugger;
+                    let pid = response.data.id
+                    debugger;
+                    newPlaylistId = pid;
+                }
+            }).catch((err) => console.log(err))
+        } await subp()
+
+
+        this.setState({ playlistId: newPlaylistId });
+    }
+
+    async addTrackToPlaylist() {
+        //declare vars for request
+        let userId = this.state.userId;
+        var authToken = this.state.accessToken
+        let playlistId = this.state.playlistId //must be 
+        let trackIdParam = ["spotify:track:" + this.state.nowPlaying.name] //must be an array of uris
+        let address = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks"
+        let success;
+        debugger;
+
+        async function sub() {
+            await axios({
+                method: 'POST',
+                url: address,
+                responseType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                  uris : trackIdParam
+                }
+            }).then(response => {
+                if (response) {
+                    debugger;
+                    success = true;
+                    debugger;
+                }
+            }).catch((err) => console.log(err))
+        } await sub();
+
+        console.log('it worked')
+        debugger;
+    }
+
     
+
 
     checkPlaylist() {
         spotifyApi.getUserPlaylists(this.state.userId)
@@ -137,10 +152,12 @@ class App extends Component {
                 debugger;
                 let play = items.filter((ps) => ps.name === 'Testing Playlist1')
                 debugger;
-                this.setState({
-                    playlist: play[0].name,
-                    playlistId: play[0].id
-                })
+                if (play[0] !== undefined) {
+                    this.setState({
+                        playlist: play[0].name,
+                        playlistId: play[0].id
+                    })
+                } else console.log('no app playlist yet')
             },
             function (err) {
                 console.error(err);
@@ -163,13 +180,14 @@ class App extends Component {
                 </div>
                 <button onClick={() => this.searchForTrack()}>
                 Search for a track </button>
-                <Player userId={this.state.userId}/>
+               
                 <LogOut />
 
                 <button onClick={this.checkPlaylist}>Playlist?</button>
+                <button onClick={this.addTrackToPlaylist}>Add Track</button>
 
                 <div>
-                    <button onClick={() => this.handleCreateAPlaylist}>Click to create a playlist</button>
+                    <button onClick={this.createATestPlaylist}>Click to create a playlist</button>
                 </div>
                 </div>
             }

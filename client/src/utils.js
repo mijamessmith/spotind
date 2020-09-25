@@ -8,13 +8,15 @@ function getRandomStrForTrackSearch() {
 
     var wildCharPosition = Math.round(Math.random());
     var outputStr = ''
+    var outputStr2 = ''
+
 
     for (let i = 0; i < 3; i++) {
         outputStr += chars[charPosition()];
     }
     if (wildCharPosition === 0) {
         outputStr = '%' + outputStr;
-    } else outputStr = '%' + outputStr + '%'   
+    } else outputStr = '%' + outputStr + '%'; 
     return outputStr;
 }
 
