@@ -4,9 +4,15 @@ import Dislike from './Dislike';
 
 
 
-function Player() {
+function Player(props) {
+
+    var { authToken, userId } = props;
+
     const [trackId, changeTrackId] = useState('');
-    const [playListId, getplayListId] = useState(null);
+    const [playlistId, getplayListId] = useState(null);
+
+
+
 
     //const [artist, updateArtist] = useState('');
     //const [trackName, updateTrackName] = useState('');
@@ -25,6 +31,7 @@ function Player() {
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
+            <Like updateParent={updateTrack} currentTrack={trackId} user={userId} auth={authToken} playlist={playlistId}/>
         </div>
         
         )

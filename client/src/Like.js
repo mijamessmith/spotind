@@ -4,7 +4,7 @@ import { getASpotifyTrackFromRandomStr, handleLikedTrack } from "./APIController
 import heart from './assets/images/heart.svg'
 
 export default function Like(props) {
-    var { updateParent, currentTrack } = props;
+    var { updateParent, currentTrack, playlist, user, auth } = props;
 
 
     const [searchStr, getSearchStr] = useState('brandnewday');
@@ -13,9 +13,6 @@ export default function Like(props) {
 
     useEffect(() => {
         async function getData() {
-
-
-
             let newTrackId = await getASpotifyTrackFromRandomStr(searchStr)
             if (newTrackId) {
                 console.log("inside the Like useEffect function with: " + newTrackId)
@@ -26,8 +23,10 @@ export default function Like(props) {
     }, [searchStr]);
 
     async function handleLike() {
-        await currentTrack
-        //() => getSearchStr(getRandomStrForTrackSearch())
+       let result = await handleLikedTrack(user, currentTrack, auth, playlist);
+        if (result) {
+            updateParent(newTrackId);
+        }
     }
 
 
