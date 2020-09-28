@@ -15,7 +15,7 @@ function getASpotifyTrackFromRandomStr(searchStr) {
 }
 
 
-async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, callBackFunction = null) {
+async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId = null, callBackFunction = null) {
 
     let userIdFromParam = userID;
     let trackIdFromParam = trackID;
@@ -31,9 +31,9 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
                     console.log('got the playlists:' + data);
                     let items = data.items
                     debugger;
-                    let play = items.filter((ps) => ps.name === 'Testing Playlist1')
+                    let play = items.filter((ps) => ps.name === 'Testing Axios Playlist')
                     debugger;
-                    if (play[0] !== undefined) {        
+                    if (play.length > 0) {        
                         PlaylistId = play[0].id
                         message += 'User had playlist. '
 
@@ -75,7 +75,7 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
                     debugger;
                     PlaylistId = response.data.id
                    debugger;
-                   message += 'Created the playlist'
+                   message += 'Created the playlist. '
                 }).catch((err) => console.log(err))
         }
         await subp();

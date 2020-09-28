@@ -27,12 +27,14 @@ function Player(props) {
         getplayListId(pID);
     }
 
+
+
     //<Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
     return (
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
-            <Like updateParent={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} auth={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
+            <Like updatePlayerTrack={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} authToken={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
         </div>
         
         )

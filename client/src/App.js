@@ -182,7 +182,7 @@ class App extends Component {
                 Search for a track </button>
                
                 <LogOut />
-                <Player auth={this.state.accessToken} userId={this.state.userId} />
+                <Player authToken={this.state.accessToken} userId={this.state.userId} />
 
                 <button onClick={this.checkPlaylist}>Playlist?</button>
                 <button onClick={this.addTrackToPlaylist}>Add Track</button>
