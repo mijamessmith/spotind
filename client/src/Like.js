@@ -4,12 +4,15 @@ import { getASpotifyTrackFromRandomStr, handleLikedTrack } from "./APIController
 import heart from './assets/images/heart.svg'
 
 export default function Like(props) {
-    var { updateParent, currentTrack, playlist, user, auth } = props;
+    var { updateParent, updateCount, currentTrack, playlist, user, auth, updatePlaylist } = props;
 
-
+    console.log(updateParent, currentTrack, playlist, user, auth, updatePlaylist);
+    debugger;
     const [searchStr, getSearchStr] = useState('brandnewday');
     const [track, getTrack] = useState("4WhyHQ2BXi2VU1iaFbF6jv");
-   
+    const [message, getMessage] = useState('')
+
+    //maybe set track outside state, so component holds it until necessary to pass back
 
     useEffect(() => {
         async function getData() {
@@ -23,9 +26,19 @@ export default function Like(props) {
     }, [searchStr]);
 
     async function handleLike() {
-       let result = await handleLikedTrack(user, currentTrack, auth, playlist);
+        console.log('inside the like')
+        async function wait() {
+            debugger;
+            let data = await handleLikedTrack(user, currentTrack, auth, playlist);
+            return data
+        }
+        let result = await wait();
+
         if (result) {
-            updateParent(newTrackId);
+            //update the playlistId in Player State
+            updatePlaylist(result[0]);
+            //update the count num in Player State
+            getMessage(result[1]);
         }
     }
 
@@ -33,7 +46,7 @@ export default function Like(props) {
     return (
         <div className='Like'>
             <p>The current track is {track}</p>
-            <a onClick={() => handleLike} onChange={() => track}>
+            <a onClick={handleLike} onChange={() => track}>
                 <img src={heart} alt='Heart Icon' style={{ height: 50, width: 50 }} />
             </a>
         </div>

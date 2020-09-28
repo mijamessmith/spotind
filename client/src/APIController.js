@@ -41,7 +41,7 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
                         addTrackToPlaylist();
                     } else console.log('no app playlist yet')
                     //call createNewPlaylist here
-                    message += 'User did not have a playlist yet. '
+                    message += 'User did not have the playlist yet. '
                     createNewPlaylist()
                 },
                     function (err) {
@@ -58,7 +58,8 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
 
              debugger;
 
-            async function subp() {
+        async function subp() {
+            debugger;
                 await axios({
                     method: 'POST',
                     url: address,
@@ -76,7 +77,9 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
                    debugger;
                    message += 'Created the playlist'
                 }).catch((err) => console.log(err))
-        } await subp();
+        }
+        await subp();
+        debugger;
         //afterwards, add the track to the new playlist
         await addTrackToPlaylist();
     }
@@ -90,6 +93,7 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
             debugger;
 
             async function sub() {
+            debugger;
                 await axios({
                     method: 'POST',
                     url: address,
@@ -132,8 +136,8 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId, c
             await checkIfUserHasPlaylist();
         }
     }
-    executeFunctionality();
-   return [PlaylistId, hasPlaylist, message]
+   await executeFunctionality();
+   return [PlaylistId, message]
 }
 
 

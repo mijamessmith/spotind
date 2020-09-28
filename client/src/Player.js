@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import EmbeddedPlayer from './EmbeddedPlayer'
 import Dislike from './Dislike';
-
+import Like from './Like'
 
 
 function Player(props) {
@@ -10,16 +10,17 @@ function Player(props) {
 
     const [trackId, changeTrackId] = useState('');
     const [playlistId, getplayListId] = useState(null);
+    const [trackLikeCount, changeTrackLikeCount] = useState(0);
 
-
-
-
-    //const [artist, updateArtist] = useState('');
-    //const [trackName, updateTrackName] = useState('');
-
+    //state updater functions to be passed as props
 
     const updateTrack = (tID) => {
         changeTrackId(tID)
+    }
+
+    const updateTrackLikeCount = (TLC) => {
+        //how to increment? Can we add one in changeTrackLikecount
+        changeTrackLikeCount(trackLikeCount + TLC); 
     }
 
     const updatePlaylistId = (pID) => {
@@ -31,7 +32,7 @@ function Player(props) {
         <div className="player">
             <EmbeddedPlayer trackIdFromDislike={trackId}/>
             <Dislike updateParent={updateTrack} />
-            <Like updateParent={updateTrack} currentTrack={trackId} user={userId} auth={authToken} playlist={playlistId}/>
+            <Like updateParent={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} auth={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
         </div>
         
         )
