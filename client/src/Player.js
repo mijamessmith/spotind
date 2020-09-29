@@ -12,6 +12,7 @@ function Player(props) {
     const [trackId, changeTrackId] = useState('');
     const [playlistId, getplayListId] = useState(null);
     const [trackLikeCount, changeTrackLikeCount] = useState(0);
+    const [trackDislikeCount, changeTrackDislikeCount] = useState(0);
 
     //state updater functions to be passed as props
 
@@ -22,28 +23,33 @@ function Player(props) {
     const updateTrackLikeCount = (TLC) => {
         //how to increment? Can we add one in changeTrackLikecount
         changeTrackLikeCount(trackLikeCount + TLC); 
+        updateTrackStr();
     }
+
+    const updateDislikeCount = (TLC) => {
+        changeTrackDislikeCount(trackDislikeCount + TLC);
+        updateTrackStr();
+    }
+
 
     const updatePlaylistId = (pID) => {
         getplayListId(pID);
     }
 
-    //useEffect(() => {
-    //    async function getData() {
-    //        let newTrackId = await getASpotifyTrackFromRandomStr(searchStr)
-    //        if (newTrackId) {
-    //            console.log("inside the dislike useEffect function with: " + newTrackId)
-    //            getTrack(newTrackId);
-    //            updateParent(newTrackId);
-    //        } else console.log("did not receive newTrack in Dislike.js")
-    //    } getData()
-    //}, [searchStr]);
+    const updateTrackStr = () => {
+        async function getData() {
+            let newTrackId = await getASpotifyTrackFromRandomStr(getRandomStrForTrackSearch())
+            if (newTrackId) {
+                console.log("inside the Player useEffect function with: " + newTrackId)
+                changeTrackId(newTrackId);        
+            } else console.log("did not receive newTrack in Dislike.js")
+        } getData()
+    };
 
-    //<Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
     return (
         <div className="player">
-            <EmbeddedPlayer trackIdFromDislike={trackId}/>
-            <Dislike updateParent={updateTrack} />
+            <EmbeddedPlayer trackIdFromDislike={trackId} />
+            <Dislike updateDislike={updateDislikeCount} />
             <Like updatePlayerTrack={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} authToken={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
         </div>
         
