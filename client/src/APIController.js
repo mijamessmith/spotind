@@ -20,7 +20,7 @@ function getASpotifyTrackFromRandomStr(searchStr) {
 async function checkIfUserHasPlaylist(authTokenFromParam) {
     let output;
     let address = "https://api.spotify.com/v1/me/playlists"
-    debugger;
+    //;
     await axios({
         method: 'GET',
         url: address,
@@ -31,10 +31,10 @@ async function checkIfUserHasPlaylist(authTokenFromParam) {
         }
     }).then(response => {
         console.log('got the playlists:' + response);
-        debugger;
+        //;
         let items = response.data.items
         let play = items.filter((ps) => ps.name == 'Testing Axios Playlist')
-        debugger;
+        //;
         if (play.length > 0) {
             let playlistId = play[0].id
             output = [true, playlistId];
@@ -55,7 +55,7 @@ async function createNewPlaylist(userIdFromParam, authTokenFromParam) {
     //needs userIdFromParam, authTokenFromParam
     let output;
     let address = "https://api.spotify.com/v1/users/" + userIdFromParam + "/playlists"
-        debugger;
+        //;
     await axios({
         method: 'POST',
         url: address,
@@ -80,7 +80,7 @@ async function addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromPar
     let output;
     let trackIdParam = ["spotify:track:" + trackIdFromParam] //must be an array of uris
     let address = "https://api.spotify.com/v1/playlists/" + PlaylistId + "/tracks"
-        debugger;
+        //;
         await axios({
             method: 'POST',
             url: address,
@@ -94,7 +94,7 @@ async function addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromPar
             }
         }).then(response => {
             console.log('posted track to playlist. ' + response)
-            debugger;
+            //;
             output = true;
            return true     
         }).catch((err) => console.log(err));
@@ -115,7 +115,7 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId = 
         await addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromParam)
             .then((res) => {
                 console.log('finished adding track' + res);
-                debugger;
+                //;
             }).catch((er) => console.log(er));
 
     } else if (!stateStoredPlaylistId) {
@@ -123,16 +123,16 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId = 
         await checkIfUserHasPlaylist(authTokenFromParam)
             .then(async (res) => {
                 console.log('finished checking if user has playlist:' + res);
-                debugger;
+                //;
                 if (res[0] == true) {
                     //set playlist Id
                     PlaylistId = res[1]
-                    debugger;
+                    //;
                     //add to track
                     await addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromParam)
                         .then((res) => {
                             console.log('finished adding track' + res);
-                            debugger;
+                            //;
                         }).catch((er) => console.log(er));
                 }
 
@@ -142,12 +142,12 @@ async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId = 
                         .then(async (res) => {
                             //set PlaylistId
                             PlaylistId = res;
-                            debugger;
+                            //;
                             //add to track
                             await addTrackToPlaylist(trackIdFromParam, res, authTokenFromParam)
                                 .then((res) => {
                                     console.log('finished adding track' + res);
-                                    debugger;
+                                    //;
                                 }).catch((er) => console.log(er));
                         })
                 }

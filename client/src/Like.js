@@ -26,16 +26,16 @@ export default function Like(props) {
     async function handleLike() {
         console.log('inside the like')
         let output;
-            debugger;
+            //;
             if (playlist) {
-                debugger;
+                //;
                 await handleLikedTrack(user, currentTrack, authToken, playlist)
                     .then((response) => {
                         output = response                       
                     }).catch(er => console.log(er))
 
             } else if (!playlist) {
-                debugger;
+                //;
                 await handleLikedTrack(user, currentTrack, authToken)
                     .then((response) => {
                         output = response;
@@ -43,7 +43,7 @@ export default function Like(props) {
             } 
         
  
-            debugger;
+            //;
             if (output) {
                 //update the playlistId in Player State
                 updatePlaylist(output[0]);
@@ -59,9 +59,8 @@ export default function Like(props) {
 
     return (
         <div className='Like'>
-            <p>Like is holding the next track Id: {track}</p>
             <a onClick={handleLike} onChange={() => track}>
-                <img src={heart} alt='Heart Icon' style={{ height: 50, width: 50 }} />
+                <img className='Like-icon' src={heart} alt='Heart Icon' style={{ height: 50, width: 50 }} />
             </a>
         </div>
     )

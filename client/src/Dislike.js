@@ -9,14 +9,14 @@ export default function Dislike(props) {
     const [track, getTrack] = useState("4WhyHQ2BXi2VU1iaFbF6jv");
 
     const handleClick = () => {
-        debugger;
+        //;
         updateDislike(1);
     }
 
     return (
         <div className='Dislike'>
             <a onClick={handleClick}>
-                <img src={dislike} alt='Frowny-Face' style={{ height: 50, width: 50 }} />
+                <img className='Dislike-icon' src={dislike} alt='Frowny-Face' style={{ height: 50, width: 50 }} />
             </a>
         </div>
         )

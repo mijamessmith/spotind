@@ -33,11 +33,11 @@ function getHashParams() {
 function getQueryParams() {
     let result = ''
     let hashed = queryString.parse(window.location.hash)
-    debugger
+    //
     if (hashed) {
-        debugger;
+        //;
         result = hashed.userId;
-        debugger;
+        //;
         return result
     } else return result;
 }
