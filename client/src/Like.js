@@ -5,11 +5,6 @@ import heart from './assets/images/heart.svg'
 
 export default function Like(props) {
     var { updatePlayerTrack, updateCount, currentTrack, playlist, user, authToken, updatePlaylist } = props;
-
-    console.log(updatePlayerTrack, currentTrack, playlist, user, authToken, updatePlaylist);
-    debugger;
-
-
     //need to fix the state here;
     const [searchStr, getSearchStr] = useState('brandnewday');
     const [track, getTrack] = useState("4WhyHQ2BXi2VU1iaFbF6jv");
@@ -30,36 +25,35 @@ export default function Like(props) {
 
     async function handleLike() {
         console.log('inside the like')
-        async function wait() {
+        let output;
             debugger;
             if (playlist) {
-                let data = await handleLikedTrack(user, currentTrack, authToken, playlist)
-                    .then()
                 debugger;
-                return data
+                await handleLikedTrack(user, currentTrack, authToken, playlist)
+                    .then((response) => {
+                        output = response                       
+                    }).catch(er => console.log(er))
+
             } else if (!playlist) {
-                let data = await handleLikedTrack(user, currentTrack, authToken);
                 debugger;
-                return data
-            }
-        }
-        //getting result before function call...
-        let result;
-        wait().then(data => {
-            result = data
+                await handleLikedTrack(user, currentTrack, authToken)
+                    .then((response) => {
+                        output = response;
+                    }).catch(er => console.log(er))
+            } 
+        
+ 
             debugger;
-            if (result) {
+            if (output) {
                 //update the playlistId in Player State
-                updatePlaylist(result[0]);
+                updatePlaylist(output[0]);
                 //update the message in Like State
-                getMessage(result[1]);
+                getMessage(output[1]);
                 //update trackId in Player State; 
                 updatePlayerTrack(track);
                 //update Count in Player State;
                 updateCount(1);
-            }
-        }).catch(er => console.log(er));
-        
+            }      
     }
 
 

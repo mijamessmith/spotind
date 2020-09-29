@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import EmbeddedPlayer from './EmbeddedPlayer'
 import Dislike from './Dislike';
 import Like from './Like'
-
+import { getRandomStrForTrackSearch } from "./utils";
+import { getASpotifyTrackFromRandomStr } from "./APIController"
 
 function Player(props) {
 
@@ -27,7 +28,16 @@ function Player(props) {
         getplayListId(pID);
     }
 
-
+    //useEffect(() => {
+    //    async function getData() {
+    //        let newTrackId = await getASpotifyTrackFromRandomStr(searchStr)
+    //        if (newTrackId) {
+    //            console.log("inside the dislike useEffect function with: " + newTrackId)
+    //            getTrack(newTrackId);
+    //            updateParent(newTrackId);
+    //        } else console.log("did not receive newTrack in Dislike.js")
+    //    } getData()
+    //}, [searchStr]);
 
     //<Like updateParent={updateTrack} currentPlaylist={updatePlaylistId} />
     return (

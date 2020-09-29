@@ -15,130 +15,149 @@ function getASpotifyTrackFromRandomStr(searchStr) {
 }
 
 
+
+
+async function checkIfUserHasPlaylist(authTokenFromParam) {
+    let output;
+    let address = "https://api.spotify.com/v1/me/playlists"
+    debugger;
+    await axios({
+        method: 'GET',
+        url: address,
+        responseType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + authTokenFromParam,
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        console.log('got the playlists:' + response);
+        debugger;
+        let items = response.data.items
+        let play = items.filter((ps) => ps.name == 'Testing Axios Playlist')
+        debugger;
+        if (play.length > 0) {
+            let playlistId = play[0].id
+            output = [true, playlistId];
+            return [true, playlistId];
+
+        } else if (play.length == 0) {
+            console.log('no app playlist yet')
+           output = [false, null]
+            return [false, null]
+        }
+    }).catch((err) => console.log(err));
+    return output;
+}
+
+
+async function createNewPlaylist(userIdFromParam, authTokenFromParam) {
+
+    //needs userIdFromParam, authTokenFromParam
+    let output;
+    let address = "https://api.spotify.com/v1/users/" + userIdFromParam + "/playlists"
+        debugger;
+    await axios({
+        method: 'POST',
+        url: address,
+        responseType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + authTokenFromParam,
+            "Content-Type": "application/json"
+        },
+        data: {
+            name: "Testing Axios Playlist"
+        }
+    }).then(response => {
+        output = response.data.id;
+        return response.data.id;
+    }).catch((err) => console.log(err));
+    return output;
+}
+
+
+async function addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromParam) {
+    //need trackIdFromParam, PlaylistId, authTokenFromParam
+    let output;
+    let trackIdParam = ["spotify:track:" + trackIdFromParam] //must be an array of uris
+    let address = "https://api.spotify.com/v1/playlists/" + PlaylistId + "/tracks"
+        debugger;
+        await axios({
+            method: 'POST',
+            url: address,
+            responseType: 'json',
+            headers: {
+                'Authorization': 'Bearer ' + authTokenFromParam,
+                "Content-Type": "application/json"
+            },
+            data: {
+                uris: trackIdParam
+            }
+        }).then(response => {
+            console.log('posted track to playlist. ' + response)
+            debugger;
+            output = true;
+           return true     
+        }).catch((err) => console.log(err));
+    return output;
+}
+
+
 async function handleLikedTrack(userID, trackID, authT, stateStoredPlaylistId = null, callBackFunction = null) {
 
     let userIdFromParam = userID;
     let trackIdFromParam = trackID;
     let authTokenFromParam = authT
     let PlaylistId = stateStoredPlaylistId;
-    let hasPlaylist = false;
-    let message = ''
+    //let handleLikeOutput;
 
-    async function checkIfUserHasPlaylist() {
-        async function checkPlaylist() {
-            spotifyApi.getUserPlaylists(userIdFromParam)
-                .then(data => {
-                    console.log('got the playlists:' + data);
-                    let items = data.items
+
+    if (stateStoredPlaylistId) {
+        await addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromParam)
+            .then((res) => {
+                console.log('finished adding track' + res);
+                debugger;
+            }).catch((er) => console.log(er));
+
+    } else if (!stateStoredPlaylistId) {
+        //check if user has playlist
+        await checkIfUserHasPlaylist(authTokenFromParam)
+            .then(async (res) => {
+                console.log('finished checking if user has playlist:' + res);
+                debugger;
+                if (res[0] == true) {
+                    //set playlist Id
+                    PlaylistId = res[1]
                     debugger;
-                    let play = items.filter((ps) => ps.name === 'Testing Axios Playlist')
-                    debugger;
-                    if (play.length > 0) {        
-                        PlaylistId = play[0].id
-                        message += 'User had playlist. '
+                    //add to track
+                    await addTrackToPlaylist(trackIdFromParam, PlaylistId, authTokenFromParam)
+                        .then((res) => {
+                            console.log('finished adding track' + res);
+                            debugger;
+                        }).catch((er) => console.log(er));
+                }
 
-                        //call add track to playlist
-                        addTrackToPlaylist();
-                    } else console.log('no app playlist yet')
-                    //call createNewPlaylist here
-                    message += 'User did not have the playlist yet. '
-                    createNewPlaylist()
-                },
-                    function (err) {
-                        console.error(err);
-                    }
-                ).catch((err) => console.log(err));
-        } 
-        await checkPlaylist() //invoke inner function
+                else if (res[0] == false) {
+                    //create new playlist
+                    await createNewPlaylist(userIdFromParam, authTokenFromParam)
+                        .then(async (res) => {
+                            //set PlaylistId
+                            PlaylistId = res;
+                            debugger;
+                            //add to track
+                            await addTrackToPlaylist(trackIdFromParam, res, authTokenFromParam)
+                                .then((res) => {
+                                    console.log('finished adding track' + res);
+                                    debugger;
+                                }).catch((er) => console.log(er));
+                        })
+                }
+            }).catch((er) => console.log(er));
+        //if so, call add to track
     }
-
-    async function createNewPlaylist() {
-      
-        let address = "https://api.spotify.com/v1/users/" + userIdFromParam + "/playlists"
-
-             debugger;
-
-        async function subp() {
-            debugger;
-                await axios({
-                    method: 'POST',
-                    url: address,
-                    responseType: 'json',
-                    headers: {
-                        'Authorization': 'Bearer ' + authTokenFromParam,
-                        "Content-Type": "application/json"
-                    },
-                    data: {
-                        name: "Testing Axios Playlist"
-                    }
-                }).then(response => {
-                    debugger;
-                    PlaylistId = response.data.id
-                   debugger;
-                   message += 'Created the playlist. '
-                }).catch((err) => console.log(err))
-        }
-        await subp();
-        debugger;
-        //afterwards, add the track to the new playlist
-        await addTrackToPlaylist();
-    }
-
-
-    async function addTrackToPlaylist() {
-            
-            let trackIdParam = ["spotify:track:" + trackIdFromParam] //must be an array of uris
-            let address = "https://api.spotify.com/v1/playlists/" + PlaylistId + "/tracks"
-          
-            debugger;
-
-            async function sub() {
-            debugger;
-                await axios({
-                    method: 'POST',
-                    url: address,
-                    responseType: 'json',
-                    headers: {
-                        'Authorization': 'Bearer ' + authTokenFromParam,
-                        "Content-Type": "application/json"
-                    },
-                    data: {
-                        uris: trackIdParam
-                    }
-                }).then(response => {
-                    if (response) {
-                        debugger;
-                        message += "added track to playlist";
-                        debugger;
-                    }
-                }).catch((err) => console.log(err))
-            } await sub();
-
-            console.log('posted track to playlist. ')
-            debugger;
-        
-    }
-
-    async function executeFunctionality() {
-
-        //in this inner function we will call above functions
-        //after getting values we will call the passed in setter
-        //functions from the above component to set the State of:
-        //playlistId, addedTrack? (a state to see how many likes?)
-
-        //we can do that by useing the param callBackFunction
-
-        if (stateStoredPlaylistId) {
-            hasPlaylist = true;
-            debugger;
-            await addTrackToPlaylist();
-        } else if (!stateStoredPlaylistId) {
-            await checkIfUserHasPlaylist();
-        }
-    }
-   await executeFunctionality();
-   return [PlaylistId, message]
+    return [PlaylistId, "Completed a Like Click"]
 }
+   
+
 
 
 export { getASpotifyTrackFromRandomStr, handleLikedTrack}
