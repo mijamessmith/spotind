@@ -1,3 +1,9 @@
 .EmbeddedPlayer {
+    margin-top: 6em;
     margin-bottom: 2em;
+}
+
+.EmbeddedPlayer-iframe {
+    height: 400px;
+    width: 300px;
 }

@@ -1,0 +1,103 @@
+.Layout {
+    top: 0;
+}
+
+.Layout-leftDiv{
+    width: 250px;
+    height: 500px;
+    background-color: #1ca1ee;
+    position: fixed;
+    left: 2em;
+    top: 8em;
+    bottom: 20em;
+    border-radius: 40px;
+}
+
+.Layout-rightDiv {
+    width: 250px;
+    height: 500px;
+    background-color: #fbf60a;
+    right: 1em;
+    position: fixed;
+    top: 15em;
+    bottom: 13em;
+    border-radius: 40px;
+}
+
+.Layout-header {
+    display: flex;
+    font-family: 'Bungee Shade', cursive;
+    font-size: 40px;
+    letter-spacing: 1px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    position: fixed;
+    background-color: #cf11d1;
+    top: 0px;
+    height: 100px;
+    width: 100%;
+    vertical-align: middle;
+    font-weight: 500;
+}
+
+.Layout-footer{
+    background-color: #17e07d;
+    position: fixed;
+    bottom: 0px;
+    height: 120px;
+    width: 100%;
+    color: white;
+}
+
+.LinkToLogIn {
+    margin: 0;
+    width: 10em;
+    height: 6em;
+    top: 30em;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+
+
+.LinkToLogIn-a {
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+
+}
+
+.LinkToLogIn-a:hover {
+    color: red;
+}
+
+.Layout-messageDiv {
+    background: white;
+    height: 200px;
+    width: 50%;
+    border-radius: 40px;
+    top: 150px;
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.Layout-messageDiv-p {
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.Layout-footer-p {
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

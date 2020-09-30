@@ -1,3 +1,12 @@
+.Dislike {
+  width: 100px;
+}
+
+.Dislike-icon{
+    margin-right: 3em;
+    height: 70px; 
+    width: 70px;
+}
 .Dislike-icon:hover {
     animation: shake 0.7s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);

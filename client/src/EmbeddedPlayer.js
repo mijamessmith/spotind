@@ -26,7 +26,7 @@ function EmbeddedPlayer({ trackIdFromDislike }) {
     var iframeSRC = "https://open.spotify.com/embed/track/" + iframeSongId
     return (
         <div className="EmbeddedPlayer">
-            <iframe className="EmbeddedPlayer-iframe" title="spotifyPlayer" src={iframeSRC} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            <iframe className="EmbeddedPlayer-iframe" title="spotifyPlayer" src={iframeSRC} frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
         )
 } 

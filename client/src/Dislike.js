@@ -16,7 +16,7 @@ export default function Dislike(props) {
     return (
         <div className='Dislike'>
             <a onClick={handleClick}>
-                <img className='Dislike-icon' src={dislike} alt='Frowny-Face' style={{ height: 50, width: 50 }} />
+                <img className='Dislike-icon' src={dislike} alt='Frowny-Face' />
             </a>
         </div>
         )

@@ -60,7 +60,7 @@ export default function Like(props) {
     return (
         <div className='Like'>
             <a onClick={handleLike} onChange={() => track}>
-                <img className='Like-icon' src={heart} alt='Heart Icon' style={{ height: 50, width: 50 }} />
+                <img className='Like-icon' src={heart} alt='Heart Icon' />
             </a>
         </div>
     )

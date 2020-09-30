@@ -47,10 +47,12 @@ function Player(props) {
     };
 
     return (
-        <div className="player">
+        <div className="Player">
             <EmbeddedPlayer trackIdFromDislike={trackId} />
-            <Dislike updateDislike={updateDislikeCount} />
-            <Like updatePlayerTrack={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} authToken={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
+            <div className="Player-icon-container">
+                <Dislike updateDislike={updateDislikeCount} />
+                <Like updatePlayerTrack={updateTrack} updateCount={updateTrackLikeCount} currentTrack={trackId} user={userId} authToken={authToken} playlist={playlistId} updatePlaylist={updatePlaylistId} />
+            </div>
         </div>
         
         )

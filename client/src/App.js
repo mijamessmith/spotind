@@ -1,16 +1,17 @@
-import React, { Component, useLocation } from 'react';
-import axios from "axios";
-import { parse } from "query-string";
-import { getRandomStrForTrackSearch, getHashParams, getQueryParams } from "./utils";
-import { getASpotifyTrackFromRandomStr } from "./APIController"
-import LogOut from './LogOut';
+import React, { Component } from 'react';
+import { getRandomStrForTrackSearch, getHashParams } from "./utils";
 
 import './assets/css/App.css';
 import './assets/css/EmbeddedPlayer.css';
 import './assets/css/Like.css';
 import './assets/css/Dislike.css';
+import './assets/css/Layout.css';
+import './assets/css/LoggedOutLanding.css';
+import './assets/css/Player.css';
 
-import Player from './Player'
+import LoggedOutLanding from './pages/LoggedOutLanding'
+import Player from './Player';
+import Layout from './Layout';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -61,10 +62,14 @@ class App extends Component {
     render() {
       
     return (
-      <div className="App">
-        <a href='http://localhost:8888/' > Login to Spotify </a>
+        <div className="App">
+            {!this.state.loggedIn &&
+                <LoggedOutLanding />
+            }
+
             {this.state.loggedIn &&
                 <div className="loggedIn">  
+                <Layout loggedIn={true}/>
                 <Player authToken={this.state.accessToken} userId={this.state.userId} />
                 </div>
             }

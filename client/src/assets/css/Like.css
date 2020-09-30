@@ -1,3 +1,13 @@
+.Like {
+	width: 100px;
+}
+
+.Like-icon {
+	margin-left: 3em;
+	height: 70px;
+	width: 70px;
+}
+
 .Like-icon:hover {
 	animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
 	transform: translate3d(0, 0, 0);

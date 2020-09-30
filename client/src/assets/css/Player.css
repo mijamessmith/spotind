@@ -1,0 +1,22 @@
+.Player {
+    background-image: url(../images/explode-1.svg);
+    width: 58%;
+    height: 700px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:700px;
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.Player-icon-container {
+    margin-top: 5em;
+    display: flex;
+    justify-content: center;
+}
+
+.Player-icon-container img {
+
+}
