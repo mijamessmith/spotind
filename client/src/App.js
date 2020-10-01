@@ -8,6 +8,7 @@ import './assets/css/Dislike.css';
 import './assets/css/Layout.css';
 import './assets/css/LoggedOutLanding.css';
 import './assets/css/Player.css';
+import './assets/css/PopoutInfo.css';
 
 import LoggedOutLanding from './pages/LoggedOutLanding'
 import Player from './Player';

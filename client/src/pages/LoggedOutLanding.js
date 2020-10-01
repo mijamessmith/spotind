@@ -8,7 +8,7 @@ export default function loggedOutLanding() {
         <div className='loggedOutLanding'>
             <Layout loggedIn={false}/>
             <div className="LinkToLogIn">
-                <a className="LinkToLogIn-a" href='http://localhost:8888/'>Log Into Spotify</a>
+                <a className="LinkToLogIn-a" href='http://localhost:8888/'>Get Started</a>
             </div>
         </div>
         )

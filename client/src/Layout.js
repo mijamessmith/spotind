@@ -1,19 +1,26 @@
 import React from 'react';
+import PopoutInfo from './PopoutInfo'
+import SpotifyLogo from './assets/images/spotify.svg'
 
 export default function Layout(props) {
     const {loggedIn} = props;
     return (
         <div className="Layout">
-            <div className="Layout-header">Tindr/Spot</div>
-            <div className="Layout-leftDiv">Left</div>
-            <div className="Layout-rightDiv">Right</div>
+            <div className="Layout-header">
+                <span className="Spotify-Logo">
+                    <a target="_blank" href="https://developer.spotify.com/documentation/web-api/quick-start/">
+                        <img className="Spotify-Logo-img" src={SpotifyLogo}></img>
+                    </a>
+                </span>Tindr/Spot</div>
+            <PopoutInfo />
+            <div className="Layout-leftDiv"></div>
+            <div className="Layout-rightDiv"></div>
             {!loggedIn &&
-                <div className="Layout-messageDiv">This is the message Div
-                <p className="Layout-messageDiv-p">Ever Wanted to experience Spotify without any track suggestions
-                    or other tracking methods? Tindr/Spot is for you</p>
+                <div className="Layout-messageDiv">
+                <p className="Layout-messageDiv-p">Building playlists from the most remote corners of the music world</p>
                 </div>
             }
-            <div className="Layout-footer">Footer
+            <div className="Layout-footer">
                 <p className="Layout-footer-p">Tindr/Spot copyright 2020 under MIT</p>
             </div>
         </div>
